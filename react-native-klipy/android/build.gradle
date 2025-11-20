@@ -1,0 +1,107 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+
+android {
+    namespace "com.klipy"
+    compileSdkVersion 34
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 34
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion "1.5.1"
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+        }
+    }
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+// Ensure all Kotlin compilation tasks target JVM 17 to match Java
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+// Ensure all Kotlin compilation tasks target JVM 17 to match Java
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+repositories {
+    // Needed for Kikliko ads SDK
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    // React Native
+    implementation 'com.facebook.react:react-native:+'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.0"
+
+    // Jetpack Compose
+    implementation platform("androidx.compose:compose-bom:2025.01.01")
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.ui:ui-graphics"
+    implementation "androidx.compose.ui:ui-tooling-preview"
+    implementation "androidx.compose.material3:material3"
+    implementation "androidx.compose.material:material-icons-extended"
+
+    implementation "androidx.activity:activity-compose:1.10.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7"
+    implementation "androidx.navigation:navigation-compose:2.8.6"
+
+    // Networking (Retrofit / OkHttp / Gson)
+    implementation "com.squareup.retrofit2:retrofit:2.11.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.11.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:5.1.0"
+
+    // Dependency injection (Koin)
+    implementation "io.insert-koin:koin-android:4.0.1"
+    implementation "io.insert-koin:koin-androidx-compose:4.0.1"
+
+    // Images / GIFs (Coil 3)
+    implementation "io.coil-kt.coil3:coil-network-okhttp:3.0.4"
+    implementation "io.coil-kt.coil3:coil-compose:3.0.4"
+    implementation "io.coil-kt.coil3:coil-gif:3.0.4"
+
+    // Video clips (Media3)
+    implementation "androidx.media3:media3-exoplayer:1.5.1"
+    implementation "androidx.media3:media3-ui:1.5.1"
+
+    // Google Ads identifier (for AdsQueryParameters)
+    implementation "com.google.android.gms:play-services-ads-identifier:18.2.0"
+
+    // Kikliko ads SDK for GIFWebView / KlipyContent
+    implementation "com.gitlab.kikliko:ads-android:1.0.0"
+}

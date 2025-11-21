@@ -8,6 +8,7 @@ import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.klipy.domain.models.MediaItem
 import com.klipy.presentation.features.conversation.model.MediaType
+import java.lang.ref.WeakReference
 
 /**
  * Android equivalent of the iOS KlipyEvents emitter.
@@ -22,7 +23,7 @@ class KlipyEvents(reactContext: ReactApplicationContext) :
   private var hasListeners = false
 
   init {
-    Companion.reactContext = reactContext
+    Companion.reactContextRef = WeakReference(reactContext)
   }
 
   @ReactMethod
@@ -36,10 +37,10 @@ class KlipyEvents(reactContext: ReactApplicationContext) :
   }
 
   companion object {
-    private var reactContext: ReactApplicationContext? = null
+    private var reactContextRef: WeakReference<ReactApplicationContext>? = null
 
     fun emitReactionSelected(item: MediaItem) {
-      val ctx = reactContext ?: return
+      val ctx = reactContextRef?.get() ?: return
 
       val payload = Arguments.createMap().apply {
         putString("id", item.id)

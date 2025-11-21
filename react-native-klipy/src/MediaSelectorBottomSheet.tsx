@@ -6,6 +6,7 @@ import {
   useWindowDimensions,
   PanResponder,
   StatusBar,
+  Platform,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import MediaSelectorView from "./MediaSelectorView";
@@ -37,6 +38,10 @@ const MediaSelectorBottomSheet: React.FC<MediaSelectorBottomSheetProps> = ({
   const { height: windowHeight } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const topInset = insets.top || StatusBar.currentHeight || 0;
+
+  if (Platform.OS !== "android") {
+    return null;
+  }
 
   const dragResponder = React.useRef(
     PanResponder.create({

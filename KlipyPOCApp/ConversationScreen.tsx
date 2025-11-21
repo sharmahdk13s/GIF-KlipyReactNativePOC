@@ -10,11 +10,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import Klipy, {
-  addReactionListener,
-  KlipyReaction,
-  MediaSelectorBottomSheet,
-} from 'react-native-klipy';
+import Klipy, { KlipyReaction } from 'react-native-klipy';
 
 type MediaSelectorVisibility = 'hidden' | 'partial' | 'full';
 
@@ -40,7 +36,7 @@ const ConversationScreen = () => {
       console.error('Failed to initialize Klipy', error);
     }
 
-    const reactionSub = addReactionListener(selected => {
+    const reactionSub = Klipy.addReactionListener(selected => {
       setReaction(selected);
       setMessages(prev => [...prev, `${selected.type}: ${selected.value}`]);
       setMediaSelectorVisibility('hidden');
@@ -83,13 +79,7 @@ const ConversationScreen = () => {
   };
 
   const toggleMore = () => {
-    if (Platform.OS === 'ios') {
-      Klipy.open();
-      return;
-    }
-    setMediaSelectorVisibility(current =>
-      current === 'hidden' ? 'partial' : 'hidden',
-    );
+    Klipy.open();
   };
 
   const inputBottomPadding =
@@ -149,15 +139,6 @@ const ConversationScreen = () => {
             <Text style={styles.sendButtonText}>Send</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Media selector bottom sheet (shared iOS/Android logic) */}
-        {Platform.OS === 'android' && (
-          <MediaSelectorBottomSheet
-            visibility={mediaSelectorVisibility}
-            keyboardHeight={keyboardHeight}
-            onVisibilityChange={setMediaSelectorVisibility}
-          />
-        )}
       </View>
     </SafeAreaView>
   );
